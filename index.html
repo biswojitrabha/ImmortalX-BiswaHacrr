@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMMORTAL X - Official Secure Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #09071c, #1a153b, #0f0c29);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Entry Animation / Terminal Screen */
+        #loader-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #030208;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .terminal-box {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 35px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 480px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+
+        .terminal-box img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 2px solid rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+            object-fit: cover;
+        }
+
+        .terminal-text {
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ffcc;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: left;
+            min-height: 90px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .creator-intro {
+            margin-top: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffcc00;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+        }
+
+        /* Main Content Container (Glassmorphism) */
+        .main-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 430px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            margin: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .main-container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 15px;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .owner-tag {
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 7px 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #ffccd5;
+            background: rgba(255, 0, 0, 0.08);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.35);
+        }
+
+        .btn-download {
+            background: rgba(0, 255, 128, 0.2);
+            border-color: rgba(0, 255, 128, 0.4);
+        }
+
+        .btn-download:hover {
+            background: rgba(0, 255, 128, 0.35);
+            border-color: #00ff80;
+        }
+
+        .btn-key {
+            background: rgba(0, 128, 255, 0.2);
+            border-color: rgba(0, 128, 255, 0.4);
+        }
+
+        .btn-key:hover {
+            background: rgba(0, 128, 255, 0.35);
+            border-color: #0080ff;
+        }
+
+        .copyright {
+            margin-top: 25px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        /* Secure Modal / Popup (Glassmorphic) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top: 3px solid #00ffcc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal-box h3 {
+            margin-bottom: 8px;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .modal-box p {
+            font-size: 13px;
+            color: #ddd;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-confirm {
+            background: rgba(0, 255, 128, 0.3);
+            color: #fff;
+        }
+        .btn-confirm:hover { background: rgba(0, 255, 128, 0.5); }
+
+        .btn-cancel {
+            background: rgba(255, 0, 0, 0.3);
+            color: #fff;
+        }
+        .btn-cancel:hover { background: rgba(255, 0, 0, 0.5); }
+    </style>
+</head>
+<body>
+
+    <!-- Entry Animation Screen -->
+    <div id="loader-screen">
+        <div class="terminal-box">
+            <img src="ImmortalX_logo.png" alt="Logo">
+            <div class="terminal-text" id="terminal"></div>
+            <div class="creator-intro">IMMORTAL X PANEL CREATED BYE BISWAJIT-HACRR</div>
+        </div>
+    </div>
+
+    <!-- Main Website Content -->
+    <div class="main-container" id="main-content">
+        <img src="ImmortalX_logo.png" alt="Immortal X Logo">
+        <h1>IMMORTAL X</h1>
+        <div class="subtitle">ADVANCED INJECTOR PANEL</div>
+        
+        <div class="owner-tag">
+            👑 OWNER: BISWAJIT-HACRR
+        </div>
+
+        <div class="disclaimer">
+            ⚠️ <b>Disclaimer:</b> Yeh free version tool sirf secondary/guest account mein hi use karein. Main account safe rakhne ke liye apni zimmedari par use karein.
+        </div>
+
+        <div class="btn-group">
+            <button class="glass-btn btn-download" onclick="openModal()">DOWNLOAD APK</button>
+            <a href="key.html" class="glass-btn btn-key">GET KEY</a>
+        </div>
+
+        <div class="copyright">
+            &copy; 2026 IMMORTAL X. All Rights Reserved. Designed by BISWAJIT-HACRR.
+        </div>
+    </div>
+
+    <!-- Secure Verification / Download Modal Popup -->
+    <div class="modal-overlay" id="downloadModal">
+        <div class="modal-box" id="modalBoxContent">
+            <div class="spinner" id="modalSpinner"></div>
+            <h3 id="modalTitle">Secure Verification</h3>
+            <p id="modalDesc">Kya aap ImmortalX injector.apk download karna chahte hain?</p>
+            <div class="modal-actions" id="modalButtons">
+                <button class="modal-btn btn-confirm" onclick="startSecureDownload()">Download</button>
+                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Web Audio API Sound Effect Generator (Sci-Fi Futuristic Beep Audio)
+        function playSciFiSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // Starting pitch
+                oscillator.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3);
+
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.3);
+            } catch (e) {
+                // Audio context restriction bypass on certain browsers
+            }
+        }
+
+        // Coding-style terminal text typing effect
+        const codeLines = [
+            "> Initializing ImmortalX Secure Core...",
+            "> Loading bypass protocols & anti-ban...",
+            "> Authenticating Creator: BISWAJIT-HACRR...",
+            "> System successfully unlocked."
+        ];
+
+        let lineIdx = 0;
+        const terminal = document.getElementById("terminal");
+
+        function typeTerminal() {
+            if (lineIdx < codeLines.length) {
+                terminal.innerHTML += codeLines[lineIdx] + "<br>";
+                playSciFiSound();
+                lineIdx++;
+                setTimeout(typeTerminal, 500);
+            } else {
+                // Hide loader and show main website after animation
+                setTimeout(() => {
+                    document.getElementById("loader-screen").style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById("loader-screen").style.display = 'none';
+                        document.getElementById("main-content").style.display = 'block';
+                    }, 800);
+                }, 600);
+            }
+        }
+
+        window.onload = () => {
+            setTimeout(typeTerminal, 400);
+        };
+
+        // Modal Controls
+        function openModal() {
+            document.getElementById('modalSpinner').style.display = 'none';
+            document.getElementById('modalTitle').innerText = "Secure Verification";
+            document.getElementById('modalDesc').innerText = "Kya aap ImmortalX injector.apk download karna chahte hain?";
+            document.getElementById('modalButtons').style.display = 'flex';
+            document.getElementById("downloadModal").style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById("downloadModal").style.display = 'none';
+        }
+
+        // Secure Download Process with Check Animation
+        function startSecureDownload() {
+            const spinner = document.getElementById('modalSpinner');
+            const title = document.getElementById('modalTitle');
+            const desc = document.getElementById('modalDesc');
+            const buttons = document.getElementById('modalButtons');
+
+            // Hide buttons and show secure loading spinner
+            buttons.style.display = 'none';
+            spinner.style.display = 'block';
+            title.innerText = "Verifying File...";
+            desc.innerText = "Checking file integrity and secure connection (3 seconds)...";
+
+            let sec = 3;
+            const secureInterval = setInterval(() => {
+                sec--;
+                if (sec > 0) {
+                    desc.innerText = `Securing download session... ${sec}s`;
+                } else {
+                    clearInterval(secureInterval);
+                    title.innerText = "Download Starting!";
+                    desc.innerText = "Aapka file secure server se download ho raha hai.";
+                    spinner.style.display = 'none';
+
+                    // Trigger File Download
+                    setTimeout(() => {
+                        closeModal();
+                        const link = document.createElement('a');
+                        link.href = 'ImmortalX injector.apk';
+                        link.download = 'ImmortalX injector.apk';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }, 1000);
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
