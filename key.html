@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMMORTAL X - Key Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .key-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .url-banner {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            color: #00ffcc;
+            word-break: break-all;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .key-container img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .desc {
+            font-size: 13px;
+            color: #ddd;
+            margin-bottom: 12px;
+        }
+
+        .disclaimer-box {
+            font-size: 11px;
+            color: #ffccd5;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: left;
+            line-height: 1.3;
+        }
+
+        .owner-text {
+            font-size: 13px;
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            color: #ccc;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .glass-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .glass-input:focus {
+            border-color: #00ffcc;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-btn {
+            width: 100%;
+            background: rgba(0, 255, 204, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 204, 0.5);
+            color: #ffffff;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-btn:hover {
+            background: rgba(0, 255, 204, 0.4);
+            border-color: #00ffcc;
+        }
+
+        /* Verification Overlay Modal */
+        .verify-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .verify-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #00ffcc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .output-box {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .key-display {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed #00ffcc;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            color: #00ffcc;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .rule-note {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #ffaa00;
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid rgba(255, 170, 0, 0.2);
+            padding: 8px;
+            border-radius: 6px;
+            line-height: 1.3;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #aaa;
+            text-decoration: none;
+        }
+        .back-link:hover { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="key-container">
+        <!-- Live URL Banner -->
+        <div class="url-banner" id="currentUrl">Loading URL...</div>
+
+        <img src="ImmortalX_logo.png" alt="Logo">
+        <h2>IMMORTAL X KEY SYSTEM</h2>
+        <div class="desc">Generate secure activation key for your injector panel.</div>
+        
+        <div class="owner-text">👑 OWNER: BISWAJIT-HACRR</div>
+
+        <div class="disclaimer-box">
+            ⚠️ <b>Rule:</b> Jab tak panel expired nahi ho jata tab tak aap dubara new key generate nahi kar sakte. New key chahiye toh owner se buy karni padegi. Yeh free version sirf second account ke liye hai!
+        </div>
+
+        <div class="input-group">
+            <label for="panelName">Panel Name Enter Karein:</label>
+            <input type="text" id="panelName" class="glass-input" placeholder="Type: IMMORTAL X">
+        </div>
+
+        <button class="glass-btn" onclick="startVerification()">GENERATE KEY</button>
+
+        <div class="output-box" id="outputSection">
+            <label style="font-size:12px; color:#aaa; display:block; margin-bottom:5px;">Aapka Generated Key:</label>
+            <div class="key-display" id="generatedKeyText">IMX-BHC-X927-K9P4</div>
+            <button class="copy-btn" onclick="copyKey()">Copy Key</button>
+        </div>
+
+        <div class="rule-note" id="ruleWarning" style="display:none;">
+            🔒 Aapne pehle hi key generate kar li hai! Jab tak panel expired nahi hota, aapko new key ke liye owner se contact karna hoga.
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Download Page</a>
+    </div>
+
+    <!-- 6 Seconds Verification Popup / Loader -->
+    <div class="verify-overlay" id="verifyOverlay">
+        <div class="verify-box">
+            <div class="spinner"></div>
+            <h3 style="color: #fff; font-size: 18px; margin-bottom: 5px;">Verifying...</h3>
+            <p id="timerText" style="font-size: 14px; color: #00ffcc;">Please wait 6 seconds...</p>
+        </div>
+    </div>
+
+    <script>
+        // Display current webpage link automatically on top
+        document.getElementById('currentUrl').innerText = "🔗 " + window.location.href;
+
+        // Check on load if key was already generated previously by this user
+        window.onload = function() {
+            if (localStorage.getItem('immortal_key_generated') === 'true') {
+                document.getElementById('outputSection').style.display = 'block';
+                document.getElementById('ruleWarning').style.display = 'block';
+                document.getElementById('generatedKeyText').innerText = "IMX-BHC-X927-K9P4";
+            }
+        }
+
+        function startVerification() {
+            const inputVal = document.getElementById('panelName').value.trim();
+
+            // Check if already generated
+            if (localStorage.getItem('immortal_key_generated') === 'true') {
+                alert("Aap pehle hi key generate kar chuke hain! Dobara generate nahi kar sakte.");
+                document.getElementById('outputSection').style.display = 'block';
+                document.getElementById('ruleWarning').style.display = 'block';
+                return;
+            }
+
+            // Validation: Must type "IMMORTAL X"
+            if (inputVal.toUpperCase() !== "IMMORTAL X") {
+                alert("Ghalat naam dala hai! Panel name me sirf 'IMMORTAL X' likhein.");
+                return;
+            }
+
+            // Show 6 seconds verification loader
+            const overlay = document.getElementById('verifyOverlay');
+            const timerText = document.getElementById('timerText');
+            overlay.style.display = 'flex';
+
+            let timeLeft = 6;
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerText.innerText = `Verifying... ${timeLeft} seconds left`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    overlay.style.display = 'none';
+
+                    // Set fixed key as requested
+                    const fixedKey = "IMX-BHC-X927-K9P4";
+                    document.getElementById('generatedKeyText').innerText = fixedKey;
+                    
+                    // Show output and lock system for this device
+                    document.getElementById('outputSection').style.display = 'block';
+                    document.getElementById('ruleWarning').style.display = 'block';
+                    localStorage.setItem('immortal_key_generated', 'true');
+                }
+            }, 1000);
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById('generatedKeyText').innerText;
+            navigator.clipboard.writeText(keyText).then(() => {
+                alert("Key Successfully Copied!");
+            });
+        }
+    </script>
+</body>
+</html>
